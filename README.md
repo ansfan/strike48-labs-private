@@ -86,6 +86,18 @@ sidebar:
 
 Active page highlighting and auto-expanding parent sections happen automatically.
 
+## Landing Page Cards & Videos
+
+The landing page (`index.vto`) renders three sections from YAML data files in `_data/`:
+
+| Section | Data file | Template variable |
+|---------|-----------|-------------------|
+| Tools | `_data/tools.yml` | `tools` |
+| Developer frameworks | `_data/developers.yml` | `developers` |
+| Videos | `_data/videos.yml` | `videos` |
+
+To add or edit a card, update the corresponding YAML file. Each tool/developer entry has: `name`, `url`, `icon` (inner SVG elements), `image` (`src` + `alt`), optional `lead`, and `description` (list of paragraphs). Video entries have: `product`, `title`, `highlight`, `description`, and `youtube_id`. Thumbnails are fetched automatically from YouTube; clicking a card opens a modal player.
+
 ## Diagrams
 
 ### Mermaid
@@ -162,7 +174,7 @@ assets/
   js/sidebar-toggle.js      # Mobile sidebar drawer
   js/cookie-consent.js      # Cookie banner logic
 blog/                       # Blog posts (type: blog set by _data.json)
-index.njk                   # Landing page (opts out of docs layout)
+index.vto                   # Landing page (opts out of docs layout)
 serve.ts                    # Entry point (imports lume/cli.ts)
 ```
 
