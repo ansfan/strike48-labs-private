@@ -154,7 +154,7 @@ Theme toggle in the header. Persists to `localStorage`. Flash-free: an inline `<
 
 ## Publishing
 
-Commit and push to `main`. GitHub Actions builds and deploys to GitHub Pages.
+Deployed via Cloudflare Workers (see `wrangler.toml`). The worker serves static assets from `_site/`.
 
 ## Project Structure
 
