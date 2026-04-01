@@ -1,0 +1,15 @@
+# Each entry needs: product, title, highlight, description, youtube_id
+# The youtube_id is the part after v= in the URL, e.g. https://youtube.com/watch?v=dQw4w9WgXcQ → dQw4w9WgXcQ
+# Thumbnails are auto-fetched from YouTube using the ID.
+
+- product: Prospector Studio
+  title: "Workflow Automation Demo"
+  highlight: "Build multi-step workflows in minutes"
+  description: "Watch how Prospector Studio's visual builder lets you chain tools, agents, and data sources into powerful automated workflows."
+  youtube_id: ZmInkxbvlCs
+
+- product: KubeStudio
+  title: "Cluster Management Overview"
+  highlight: "AI-powered Kubernetes insights"
+  description: "A walkthrough of KubeStudio's cluster dashboard, showing real-time monitoring, AI recommendations, and one-click actions."
+  youtube_id: TaFDzTzKAT0

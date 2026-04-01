@@ -1,0 +1,619 @@
+---
+title: Strike48 Labs
+description: Documentation for the Strike48 security platform
+layout: false
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>Strike48 Labs</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="stylesheet" href="/assets/css/vars.css">
+    <link rel="stylesheet" href="/assets/css/landing.css">
+    <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+    <script src="/pagefind/pagefind-ui.js"></script>
+    <script>
+      (function(){var t=localStorage.getItem("theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t)})();
+    </script>
+    <style>
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Inter", system-ui, sans-serif; color: var(--color-text); background: var(--color-bg); }
+.neural-graph[data-mode="hero"] {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+}
+    /* Hero toolbar */
+    .hero-toolbar {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.5rem;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .hero-toolbar .theme-toggle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+      color: #94a3b8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+      flex-shrink: 0;
+      padding: 0;
+    }
+    .hero-toolbar .theme-toggle:hover {
+      background: rgba(255,255,255,0.14);
+      color: #f8fafc;
+    }
+    :root[data-theme="dark"] .icon-sun { display: none; }
+    :root[data-theme="dark"] .icon-moon { display: inline; }
+    :root:not([data-theme="dark"]) .icon-sun { display: inline; }
+    :root:not([data-theme="dark"]) .icon-moon { display: none; }
+
+    /* Hero search */
+    .hero-search {
+      display: flex;
+      align-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.15);
+      cursor: pointer;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  border-radius 0.35s ease,
+                  background 0.3s ease;
+      position: relative;
+    }
+    .hero-search:hover:not(.open) {
+      background: rgba(255,255,255,0.14);
+    }
+    .hero-search:hover:not(.open) .hero-search-icon { color: #f8fafc; }
+    .hero-search.open {
+      width: min(420px, calc(100vw - 3rem));
+      border-radius: 22px;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(16px);
+      cursor: default;
+    }
+    .hero-search-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      color: #94a3b8;
+      transition: color 0.2s;
+    }
+    .hero-search.open .hero-search-icon {
+      color: #64748b;
+      pointer-events: none;
+    }
+    .hero-search-body {
+      flex: 1;
+      min-width: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      padding-right: 12px;
+    }
+    .hero-search.open .hero-search-body {
+      opacity: 1;
+      pointer-events: auto;
+      transition-delay: 0.15s;
+    }
+
+    /* Pagefind overrides for hero */
+    #hero-pagefind {
+      --pagefind-ui-scale: 0.75;
+      --pagefind-ui-primary: #60a5fa;
+      --pagefind-ui-text: #f8fafc;
+      --pagefind-ui-background: transparent;
+      --pagefind-ui-border: transparent;
+      --pagefind-ui-border-width: 0;
+      --pagefind-ui-border-radius: 8px;
+      --pagefind-ui-font: "Inter", system-ui, sans-serif;
+    }
+    #hero-pagefind .pagefind-ui__form {
+      margin: 0 !important;
+      padding: 0 !important;
+      position: static !important;
+    }
+    /* Hide the default magnifying glass pseudo-element */
+    #hero-pagefind .pagefind-ui__form:before,
+    #hero-pagefind .pagefind-ui__form::before {
+      display: none !important;
+      content: none !important;
+    }
+    #hero-pagefind .pagefind-ui__search-input {
+      background-image: none !important;
+      background-color: transparent !important;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      color: #f8fafc !important;
+      padding: 0 !important;
+      padding-left: 0 !important;
+      height: 28px !important;
+      min-height: 0 !important;
+      font-size: 0.9rem !important;
+      font-weight: 400 !important;
+      text-align: left !important;
+      outline: none;
+      width: 100%;
+    }
+    #hero-pagefind .pagefind-ui__search-input::placeholder {
+      color: #64748b !important;
+      opacity: 1 !important;
+    }
+    #hero-pagefind .pagefind-ui__search-clear {
+      color: #94a3b8 !important;
+      position: absolute !important;
+      top: 50% !important;
+      right: 0 !important;
+      transform: translateY(-50%) !important;
+      padding: 0 2px !important;
+      height: auto !important;
+      font-size: 0.75rem !important;
+      background: transparent !important;
+    }
+    #hero-pagefind .pagefind-ui__search-clear:focus { outline: none; }
+
+    /* Results dropdown — absolutely positioned below the search bar */
+    #hero-pagefind .pagefind-ui__drawer {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      margin-top: 0.5rem;
+      background: #0f172a;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      max-height: max(30rem, 50vh);
+      overflow-y: auto;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      text-align: left !important;
+    }
+    #hero-pagefind .pagefind-ui__drawer * {
+      text-align: left !important;
+    }
+    #hero-pagefind .pagefind-ui__message {
+      color: #94a3b8 !important;
+      font-size: 0.8rem !important;
+      padding: 0.5rem 0 !important;
+    }
+    #hero-pagefind .pagefind-ui__result {
+      border-color: rgba(255,255,255,0.08) !important;
+      padding: 0.75rem 0 !important;
+    }
+    #hero-pagefind .pagefind-ui__result-title {
+      color: #f8fafc !important;
+      font-size: 0.95rem !important;
+    }
+    #hero-pagefind .pagefind-ui__result-link {
+      color: #60a5fa !important;
+    }
+    #hero-pagefind .pagefind-ui__result-link:hover {
+      color: #93bbfd !important;
+    }
+    #hero-pagefind .pagefind-ui__result-excerpt {
+      color: #94a3b8 !important;
+      font-size: 0.8rem !important;
+      line-height: 1.5 !important;
+    }
+    #hero-pagefind .pagefind-ui__result-nested {
+      padding-left: 1rem !important;
+      border-left: 2px solid rgba(255,255,255,0.08) !important;
+      margin-top: 0.35rem !important;
+    }
+    #hero-pagefind .pagefind-ui__result-nested .pagefind-ui__result-link {
+      color: #94a3b8 !important;
+      font-size: 0.85rem !important;
+    }
+    #hero-pagefind .pagefind-ui__loading {
+      background-color: #334155 !important;
+      color: #334155 !important;
+    }
+    #hero-pagefind .pagefind-ui__button {
+      color: #60a5fa !important;
+      border-color: rgba(255,255,255,0.15) !important;
+      background: transparent !important;
+      text-align: center !important;
+    }
+    #hero-pagefind .pagefind-ui__button:hover {
+      border-color: #60a5fa !important;
+    }
+    #hero-pagefind mark {
+      color: #f8fafc !important;
+      background: rgba(96, 165, 250, 0.25) !important;
+      font-weight: 600;
+    }
+
+    .cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999; background: #1e293b; border-top: 1px solid #334155; box-shadow: 0 -4px 20px rgba(0,0,0,0.3); padding: 1.25rem 1.5rem; animation: cookie-slide-up 0.4s ease; }
+    .cookie-banner[data-hidden] { display: none; }
+    @keyframes cookie-slide-up { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .cookie-inner { max-width: 960px; margin: 0 auto; }
+    .cookie-text { color: #cbd5e1; font-size: 0.8125rem; line-height: 1.6; margin-bottom: 0.5rem; }
+    .cookie-text a { color: #60a5fa; text-decoration: underline; text-underline-offset: 2px; }
+    .cookie-text a:hover { color: #93bbfd; }
+    .cookie-text-small { color: #94a3b8; font-size: 0.75rem; margin-bottom: 1rem; }
+    .cookie-actions { display: flex; gap: 0.75rem; }
+    .cookie-btn { padding: 0.5rem 1.5rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; border: none; cursor: pointer; transition: background-color 0.15s ease; }
+    .cookie-btn-accept { background: #2563eb; color: #fff; }
+    .cookie-btn-accept:hover { background: #1d4ed8; }
+    .cookie-btn-decline { background: transparent; color: #cbd5e1; border: 1px solid #475569; }
+    .cookie-btn-decline:hover { border-color: #64748b; color: #f1f5f9; }
+    </style>
+  </head>
+  <body>
+
+    <!-- Cookie Consent -->
+    <div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Cookie consent">
+      <div class="cookie-inner">
+        <p class="cookie-text">
+        This website stores cookies on your computer to collect information about how you interact with our website. We use this information to customize content and analyze traffic. See our <a href="/legal/privacy-policy/">Cookie Policy</a>.
+        </p>
+        <p class="cookie-text cookie-text-small">
+        If you decline, your information won't be tracked. A single cookie will remember your preference.
+        </p>
+        <div class="cookie-actions">
+          <button id="cookie-accept" class="cookie-btn cookie-btn-accept">Accept</button>
+          <button id="cookie-decline" class="cookie-btn cookie-btn-decline">Decline</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <section class="landing-hero" style="position: relative; overflow: visible;">
+      <canvas class="neural-graph" data-mode="hero"></canvas>
+
+      <div class="hero-toolbar">
+        <button class="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <div class="hero-search" id="hero-search">
+          <span class="hero-search-icon" id="hero-search-toggle" role="button" tabindex="0" aria-label="Search documentation">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </span>
+          <div class="hero-search-body">
+            <div id="hero-pagefind"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="position: relative; z-index: 1;">
+        <img src="/assets/img/strike48-labs-logo-light.svg" alt="Strike48" height="248" style="margin: 0 auto 1.5rem; display: block;">
+      </div>
+    </section>
+
+    <div class="landing-body">
+      <section class="landing-intro">
+        <h1>Sharing Next-Gen Infrastructure Tooling</h1>
+        <div class="side-by-side">
+          <div class="one-side">
+            <p>
+            <em>Strike48 Labs</em> is a group of developers tasked with bringing wild ideas to life, building tools that
+            push the boundaries of what's possible.
+            </p>
+            <p>
+            We recognize that we are building on the shoulders of the giants who have preceded us, so we
+            feel it's only right we should share what we do: the tools we build, the experiments we run, and the lessons we learn along the way.
+            </p>
+            <p>
+            All this stuff is freely vailable under an MIT license.
+            </p>
+          </div>
+          <div class="one-side highlight-links">
+            <ul>
+              <li>
+                <p>
+                <a href="#tools">Explore</a> our growing suite of tools for red teamers, blue teamers, and security researchers—all built on the Strike48 platform.
+                </p>
+              </li>
+              <li>
+                <p>
+                <a href="#frameworks">Develop</a> your own tools using our libraries and frameworks.
+                </p>
+              </li>
+              <li>
+                <p>
+                <a href="#lab-notes">Read</a> our Lab Notes, where we share what we're working on now and the lessons we've learned.
+                </p>
+              </li>
+              <li>
+                <p>
+                <a href="#videos">Watch</a> videos where we demo features and ideas.
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!---------------------------------  TOOLS ---------------------------------->
+
+      <section class="landing-section">
+        <div class="section-header">
+          <h1 id="tools">Use</h1>
+          <h2>the tools we build</h2>
+        </div>
+        <div class="products-grid">
+          {{ for tool of tools }}
+          <a href="{{ tool.url }}" class="product-card{{ if tool.image }} has-image{{ /if }}">
+            <span class="product-card-sheen" aria-hidden="true"></span>
+            {{ if tool.image }}
+            <div class="product-card-media">
+              <img src="{{ tool.image.src }}" alt="{{ tool.image.alt }}" loading="lazy">
+            </div>
+            {{ /if }}
+            <div class="product-card-body">
+              <h3>
+                <span class="product-icon-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{{ tool.icon }}</svg></span>
+                {{ tool.name }}
+              </h3>
+              {{ if tool.lead }}
+              <p class="lead">{{ tool.lead }}</p>
+              {{ /if }}
+              {{ for para of tool.description }}
+              <p>{{ para }}</p>
+              {{ /for }}
+              <span class="product-card-arrow" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            </div>
+          </a>
+          {{ /for }}
+        </div>
+      </section>
+
+      <!----------------------------- DEVELOPERS ---------------------------------->
+
+      <section class="landing-section">
+        <div class="section-header">
+          <h1 id="frameworks">Develop</h1>
+          <h2>using our libraries and frameworks</h2>
+        </div>
+        <div class="products-grid">
+          {{ for dev of developers }}
+          <a href="{{ dev.url }}" class="product-card{{ if dev.image }} has-image{{ /if }}">
+            <span class="product-card-sheen" aria-hidden="true"></span>
+            {{ if dev.image }}
+            <div class="product-card-media">
+              <img src="{{ dev.image.src }}" alt="{{ dev.image.alt }}" loading="lazy">
+            </div>
+            {{ /if }}
+            <div class="product-card-body">
+              <h3>
+                <span class="product-icon-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{{ dev.icon }}</svg></span>
+                {{ dev.name }}
+              </h3>
+              {{ if dev.lead }}
+              <p class="lead">{{ dev.lead }}</p>
+              {{ /if }}
+              {{ for para of dev.description }}
+              <p>{{ para }}</p>
+              {{ /for }}
+              <span class="product-card-arrow" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            </div>
+          </a>
+          {{ /for }}
+        </div>
+
+      </section>
+
+      <!----------------------------- LAB NOTES ----------------------------------->
+
+      {{ set posts = search.pages("type=blog", "date=desc", 3) }}
+        <section class="landing-section">
+          <div class="section-header">
+            <h1 id="lab-notes">Read</h1>
+            <h2>our notes on what we've build and discovered</h2>
+          </div>
+          <div class="lab-notes-header">
+            <h1><a href="/blog/">Lab Notes</a></h2>
+            <h2>see what we're working on, and what we learned along the way</h3>
+          </div>
+          <div class="blog-list">
+          {{ for post of posts }}
+            {{ set author = post.authors?.[0] ? author_info?.[post.authors[0]] : null }}
+            <a href="{{ post.url }}" class="blog-link">
+              {{ if author?.picture }}
+              <img class="blog-link-avatar" src="{{ author.picture }}" alt="{{ author.title || author.name }}">
+              {{ /if }}
+              <div class="blog-link-body">
+                <div class="blog-link-header">
+                  <span class="blog-link-title">{{ post.title }}</span>
+                  <time datetime="{{ post.date.toISOString().split('T')[0] }}">{{ post.date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) }}</time>
+                </div>
+                {{ if post.excerpt }}
+                <p class="blog-link-excerpt">{{ post.excerpt }}</p>
+                {{ /if }}
+              </div>
+            </a>
+          {{ /for }}
+          </div>
+        </section>
+
+
+      <!----------------------------- VIDEOS ----------------------------------->
+
+      <section class="landing-section">
+        <div class="section-header">
+          <h1 id="videos">Watch</h1>
+          <h2>as we show off a little...</h2>
+        </div>
+        <div class="products-grid">
+          {{ for vid of videos }}
+          <button class="product-card has-image video-card" data-youtube-id="{{ vid.youtube_id }}" aria-label="Play {{ vid.title }}">
+            <span class="product-card-sheen" aria-hidden="true"></span>
+            <div class="product-card-media video-card-thumb">
+              <img src="https://img.youtube.com/vi/{{ vid.youtube_id }}/hqdefault.jpg" alt="{{ vid.title }}" loading="lazy">
+              <span class="video-play-btn" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </div>
+            <div class="product-card-body">
+              <h3>
+                <span class="product-icon-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect width="15" height="14" x="1" y="5" rx="2" ry="2"/></svg></span>
+                {{ vid.product }}
+              </h3>
+              <p class="lead">{{ vid.title }}</p>
+              <p class="video-highlight">{{ vid.highlight }}</p>
+              <p>{{ vid.description }}</p>
+            </div>
+          </button>
+          {{ /for }}
+        </div>
+      </section>
+    </div>
+
+    <!-- Video modal -->
+    <div class="video-modal" id="video-modal" hidden>
+      <div class="video-modal-backdrop"></div>
+      <div class="video-modal-content">
+        <button class="video-modal-close" aria-label="Close video">&times;</button>
+        <div class="video-modal-player">
+          <iframe id="video-modal-iframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <section class="features-section">
+      <h2>Built for Increasing Productivity</h2>
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg></div>
+          <h3>Connector Architecture</h3>
+          <p>Modular connector system — each tool runs as an isolated process with its own UI, communicating over IPC.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <h3>Secure by Default</h3>
+          <p>Unix domain sockets for process isolation. OIDC authentication with automatic token injection. No ports exposed.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></div>
+          <h3>Native Performance</h3>
+          <p>Built with Rust and Dioxus for sub-2-second startup. WebView rendering with minimal memory overhead.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4"/><path d="M2 8h20"/><path d="M6 4v4"/></svg></div>
+          <h3>Single Window</h3>
+          <p>All your Strike48 connectors in one native window. Switch between tools without alt-tabbing.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg></div>
+          <h3>AI-Powered</h3>
+          <p>Autonomous agents, RAG-enabled knowledge bases, and multi-step workflows — automate reconnaissance, analysis, and reporting with AI.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <h2>Ready to get started?</h2>
+      <p>Set up StrikeHub and start managing your connector apps in one place.</p>
+      <div class="cta-group">
+        <a href="/strikehub/getting-started/" class="cta-primary">Quick Start Guide</a>
+        <a href="/overview/" class="cta-secondary">Browse Documentation</a>
+      </div>
+    </section>
+
+    <script src="/assets/js/neural-graph.js"></script>
+    <script src="/assets/js/theme-switcher.js"></script>
+    <script src="/assets/js/cookie-consent.js"></script>
+    <script>
+    (function() {
+      var heroSearch = document.getElementById('hero-search');
+      var toggle = document.getElementById('hero-search-toggle');
+      var initialized = false;
+
+      toggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (heroSearch.classList.contains('open')) return;
+        heroSearch.classList.add('open');
+
+        if (!initialized) {
+          new PagefindUI({
+            element: '#hero-pagefind',
+            showSubResults: true,
+            showImages: false
+          });
+          initialized = true;
+        }
+
+        setTimeout(function() {
+          var input = document.querySelector('#hero-pagefind .pagefind-ui__search-input');
+          if (input) input.focus();
+        }, 350);
+      });
+
+      toggle.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle.click();
+        }
+      });
+
+      document.addEventListener('click', function(e) {
+        if (heroSearch.classList.contains('open') && !heroSearch.contains(e.target)) {
+          heroSearch.classList.remove('open');
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && heroSearch.classList.contains('open')) {
+          heroSearch.classList.remove('open');
+        }
+      });
+    })();
+    </script>
+    <script>
+    (function() {
+      var modal = document.getElementById('video-modal');
+      var iframe = document.getElementById('video-modal-iframe');
+      var backdrop = modal.querySelector('.video-modal-backdrop');
+      var closeBtn = modal.querySelector('.video-modal-close');
+
+      function open(youtubeId) {
+        iframe.src = 'https://www.youtube.com/embed/' + youtubeId + '?autoplay=1&rel=0';
+        modal.hidden = false;
+        document.body.style.overflow = 'hidden';
+      }
+
+      function close() {
+        modal.hidden = true;
+        iframe.src = '';
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('.video-card').forEach(function(card) {
+        card.addEventListener('click', function() {
+          var id = card.dataset.youtubeId;
+          if (id && id !== 'REPLACE_ME') open(id);
+        });
+      });
+
+      closeBtn.addEventListener('click', close);
+      backdrop.addEventListener('click', close);
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !modal.hidden) close();
+      });
+    })();
+    </script>
+  </body>
+</html>

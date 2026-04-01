@@ -37,8 +37,12 @@
 
     var nodes = [];
     var signals = [];
+    var isGold = false;
+    var flashAlpha = 0;
 
     function detectTheme() {
+      // Hero always renders on a dark background regardless of page theme
+      if (mode === "hero") { isDark = true; return; }
       var root = document.documentElement;
       var theme = root.getAttribute("data-theme");
       if (theme) {
@@ -49,6 +53,22 @@
     }
 
     function getColors() {
+      if (isGold) {
+        if (isDark) {
+          return {
+            node: "234, 179, 8",
+            connection: "234, 179, 8",
+            signal: "255, 215, 0",
+            glow: "255, 215, 0",
+          };
+        }
+        return {
+          node: "166, 124, 0",
+          connection: "180, 140, 10",
+          signal: "202, 152, 0",
+          glow: "202, 152, 0",
+        };
+      }
       if (isDark) {
         return {
           node: "148, 163, 184",
@@ -138,6 +158,8 @@
           node.vx += (dmx / mouseDist) * force;
           node.vy += (dmy / mouseDist) * force;
         }
+        node.vx += (Math.random() - 0.5) * 0.02;
+        node.vy += (Math.random() - 0.5) * 0.02;
         node.vx *= 0.99;
         node.vy *= 0.99;
         node.x += node.vx;
@@ -234,6 +256,49 @@
       signals = signals.filter(function (s) {
         return s.active;
       });
+
+      var capturedCount = 0;
+      for (var n = 0; n < nodes.length; n++) {
+        var cdx = nodes[n].x - mouseX;
+        var cdy = nodes[n].y - mouseY;
+        if (Math.sqrt(cdx * cdx + cdy * cdy) < MOUSE_RADIUS) capturedCount++;
+      }
+      var pct = capturedCount / nodes.length;
+
+      if (pct > 0) {
+        var barHeight = mode === "hero" ? 4 : 2;
+        var barWidth = width * pct;
+        var grad = ctx.createLinearGradient(0, 0, width, 0);
+        var blueEnd = isDark ? "rgb(96, 165, 250)" : "rgb(37, 99, 235)";
+        var goldEnd = isDark ? "rgb(255, 215, 0)" : "rgb(202, 152, 0)";
+        grad.addColorStop(0, blueEnd);
+        grad.addColorStop(1, goldEnd);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, height - barHeight, barWidth, barHeight);
+      }
+
+      if (capturedCount === nodes.length) {
+        flashAlpha = 0.6;
+        isGold = true;
+        signals = [];
+        for (var n = 0; n < nodes.length; n++) {
+          nodes[n].x = Math.random() * width;
+          nodes[n].y = Math.random() * height;
+          nodes[n].vx = (Math.random() - 0.5) * 0.3 * SPEED;
+          nodes[n].vy = (Math.random() - 0.5) * 0.3 * SPEED;
+        }
+      }
+
+      if (flashAlpha > 0) {
+        var flashColor = isDark
+          ? "rgba(255, 215, 0, " + flashAlpha + ")"
+          : "rgba(202, 152, 0, " + flashAlpha + ")";
+        ctx.fillStyle = flashColor;
+        ctx.fillRect(0, 0, width, height);
+        flashAlpha *= 0.94;
+        if (flashAlpha < 0.01) flashAlpha = 0;
+      }
+
       requestAnimationFrame(draw);
     }
 

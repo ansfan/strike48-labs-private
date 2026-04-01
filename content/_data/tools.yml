@@ -1,0 +1,54 @@
+- name: KubeStudio
+  url: /kubestudio/
+  icon: >-
+    <rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/>
+  image:
+    src: /assets/img/kubestudio/screenshots/overview.png
+    alt: KubeStudio screenshot
+  description:
+    - "Kubernetes cluster management dashboard."
+    - "Think k9s, but with AI-powered insights, recommendations, and automation built in."
+
+- name: Prospector Studio
+  url: /prospector-studio/
+  icon: >-
+    <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>
+  image:
+    src: /assets/img/prospector-studio/screenshots/overview.png
+    alt: Prospector Studio screenshot
+  lead: "AI-powered workflow automation and agent platform."
+  description:
+    - "Design multi-step workflows with an intuitive visual builder, then let Prospector's autonomous agents execute them for you."
+
+- name: StrikeHub
+  url: /strikehub/
+  icon: >-
+    <rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>
+  image:
+    src: /assets/img/strikehub/screenshots/overview.png
+    alt: StrikeHub screenshot
+  lead: "The unified desktop shell."
+  description:
+    - "Wrap your applications inside StrikeHub, and give your users a seamless, integrates, and deployable solution."
+
+- name: Pick
+  url: /pick/
+  icon: >-
+    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/>
+  image:
+    src: /assets/img/pick/screenshots/overview.png
+    alt: Pick screenshot
+  lead: "Headless penetration testing toolkit."
+  description:
+    - "Control it both locally and remotely to tes the security of your networks."
+
+- name: StrikeKit
+  url: /developers/strikekit/
+  icon: >-
+    <polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/>
+  image:
+    src: /assets/img/strikekit/screenshots/overview.png
+    alt: StrikeKit screenshot
+  lead: "Comprehensive red team operations workstation."
+  description:
+    - "A comprehensive set of tools, augmented with a knowledgable AI."

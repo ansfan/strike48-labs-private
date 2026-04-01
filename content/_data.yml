@@ -1,5 +1,5 @@
 features:
-  blog: false
+  blog: true
 
 site_title: Strike48 Labs
 site_description: Documentation for the Strike48 security platform
