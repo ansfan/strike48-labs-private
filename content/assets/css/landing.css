@@ -5,6 +5,52 @@
     text-align: center;
   }
 
+/* Landing header — transparent over hero, fades in on scroll */
+
+.header--landing {
+  position: fixed;
+  width: 100%;
+  background: transparent;
+  border-bottom-color: transparent;
+}
+
+.header--landing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-bg-nav);
+  border-bottom: 1px solid var(--color-border);
+  opacity: var(--header-bg-opacity, 0);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.header--landing .site-title-trigger {
+  opacity: var(--header-bg-opacity, 0);
+  transition: opacity 0.15s;
+}
+
+.header--landing .sidebar-toggle {
+  display: none !important;
+}
+
+.header--landing .social-link,
+.header--landing .theme-toggle,
+.header--landing .header-search-toggle {
+  transition: color 0.3s ease;
+}
+
+.header--landing:not(.header--solid) .social-link,
+.header--landing:not(.header--solid) .theme-toggle,
+.header--landing:not(.header--solid) .header-search-toggle {
+  color: #94a3b8;
+}
+
+.header--landing:not(.header--solid) .social-link:hover,
+.header--landing:not(.header--solid) .theme-toggle:hover,
+.header--landing:not(.header--solid) .header-search-toggle:hover {
+  color: #f8fafc;
+}
 
 .landing-hero {
   background: linear-gradient(0deg, #0f172a 0%, #182537 50%, #0f172a 100%);
