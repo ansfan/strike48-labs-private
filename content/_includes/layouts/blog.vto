@@ -1,0 +1,142 @@
+{{ set extra_css = ["/assets/css/blog.css"] }}
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  {{ include "partials/head.vto" }}
+</head>
+<body>
+
+{{ include "partials/header.vto" }}
+
+  <div class="blog-layout">
+    <article>
+
+      <header class="blog-header">
+        {{ if tags }}
+        <div class="blog-tags">
+          {{ for tag of tags }}
+          <span class="tag-pill">{{ tag }}</span>
+          {{ /for }}
+        </div>
+        {{ /if }}
+
+        <h1 class="blog-title">{{ title }}</h1>
+
+        <div class="blog-meta-row">
+          {{ if authors && author_info }}
+            {{ for id of authors }}
+              {{ set author = author_info[id] }}
+              {{ if author }}
+              <div class="blog-author-inline">
+                {{ if author.picture }}<img src="{{ author.picture }}" alt="{{ author.title || author.name }}">{{ /if }}
+                <span>{{ author.title || author.name }}</span>
+              </div>
+              {{ /if }}
+            {{ /for }}
+          {{ /if }}
+          {{ if date }}
+            {{ set d = (date instanceof Date) ? date : new Date(date) }}
+            <span class="blog-meta-sep">&middot;</span>
+            <time datetime="{{ d.toISOString().split('T')[0] }}">{{ d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) }}</time>
+          {{ /if }}
+          {{ if readingTime }}
+            <span class="blog-meta-sep">&middot;</span>
+            <span>{{ readingTime }} min read</span>
+          {{ /if }}
+        </div>
+
+        {{ if image }}
+        <img class="blog-featured-image" src="{{ image }}" alt="{{ title }}">
+        {{ /if }}
+      </header>
+
+      <div class="blog-content">
+        {{ content }}
+      </div>
+
+      {{ if authors && author_info }}
+      {{ for id of authors }}
+        {{ set author = author_info[id] }}
+        {{ if author }}
+        <div class="blog-author-card">
+          {{ if author.picture }}<img src="{{ author.picture }}" alt="{{ author.title || author.name }}">{{ /if }}
+          <div class="blog-author-card-info">
+            <strong>{{ author.title || author.name }}</strong>
+            {{ if author.bio }}<p>{{ author.bio }}</p>{{ /if }}
+          </div>
+        </div>
+        {{ /if }}
+      {{ /for }}
+      {{ /if }}
+
+      {{ set allPosts = search.pages("type=blog", "date=desc") }}
+      {{ set related = [] }}
+      {{ for post of allPosts }}
+        {{ if post.url != url && related.length < 3 }}
+          {{ for tag of (tags || []) }}
+            {{ if (post.tags || []).includes(tag) && !related.includes(post) }}
+              {{ set related = related.concat([post]) }}
+            {{ /if }}
+          {{ /for }}
+        {{ /if }}
+      {{ /for }}
+
+      {{ if related.length > 0 }}
+      <section class="blog-related">
+        <h2>Related Posts</h2>
+        <div class="blog-related-grid">
+          {{ for post of related }}
+          <a href="{{ post.url }}" class="blog-related-card">
+            <div class="blog-related-card-body">
+              {{ if post.tags }}
+              <div class="blog-related-card-tags">
+                {{ for tag of post.tags }}
+                <span class="tag-pill">{{ tag }}</span>
+                {{ /for }}
+              </div>
+              {{ /if }}
+              <h3>{{ post.title }}</h3>
+              {{ if post.date }}
+                {{ set pd = (post.date instanceof Date) ? post.date : new Date(post.date) }}
+                <time datetime="{{ pd.toISOString().split('T')[0] }}">{{ pd.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) }}</time>
+              {{ /if }}
+            </div>
+          </a>
+          {{ /for }}
+        </div>
+      </section>
+      {{ /if }}
+
+    </article>
+
+    <aside class="blog-toc">
+      <nav class="toc-nav" data-toc></nav>
+    </aside>
+  </div>
+
+  <!-- Mobile TOC -->
+  <button class="blog-toc-toggle" aria-label="Table of contents" aria-expanded="false">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="15" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>
+  </button>
+  <div class="blog-toc-mobile" hidden></div>
+
+{{ include "partials/cookie-banner.vto" }}
+{{ include "partials/scripts.vto" }}
+  <script src="/assets/js/blog-toc.js"></script>
+  <script>
+    // Copy TOC content to mobile panel
+    (function() {
+      var toc = document.querySelector('.blog-toc .toc-nav');
+      var mobile = document.querySelector('.blog-toc-mobile');
+      if (toc && mobile && toc.innerHTML.trim()) {
+        mobile.innerHTML = toc.innerHTML;
+      } else {
+        // No TOC content — hide the toggle button
+        var btn = document.querySelector('.blog-toc-toggle');
+        if (btn) btn.style.display = 'none';
+        if (mobile) mobile.remove();
+      }
+    })();
+  </script>
+</body>
+</html>

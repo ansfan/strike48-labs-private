@@ -315,11 +315,16 @@ body { font-family: "Inter", system-ui, sans-serif; color: var(--color-text); ba
             feel it's only right we should share what we do: the tools we build, the experiments we run, and the lessons we learn along the way.
             </p>
             <p>
-            All this stuff is freely vailable under an MIT license.
+            All this stuff is freely available under an MIT license.
             </p>
           </div>
           <div class="one-side highlight-links">
             <ul>
+              <li>
+                <p>
+                <a href="#lab-notes">Read</a> our Lab Notes, where we share what we're working on now and the lessons we've learned.
+                </p>
+              </li>
               <li>
                 <p>
                 <a href="#tools">Explore</a> our growing suite of tools for red teamers, blue teamers, and security researchers—all built on the Strike48 platform.
@@ -332,11 +337,6 @@ body { font-family: "Inter", system-ui, sans-serif; color: var(--color-text); ba
               </li>
               <li>
                 <p>
-                <a href="#lab-notes">Read</a> our Lab Notes, where we share what we're working on now and the lessons we've learned.
-                </p>
-              </li>
-              <li>
-                <p>
                 <a href="#videos">Watch</a> videos where we demo features and ideas.
                 </p>
               </li>
@@ -344,6 +344,55 @@ body { font-family: "Inter", system-ui, sans-serif; color: var(--color-text); ba
           </div>
         </div>
       </section>
+
+      <!----------------------------- LAB NOTES ----------------------------------->
+
+      {{ set posts = search.pages("type=blog", "date=desc", 6) }}
+        <section class="landing-section">
+          <div class="section-header">
+            <h1 id="lab-notes">Read</h1>
+            <h2>our notes on what we've built and discovered</h2>
+          </div>
+          <div class="lab-notes-header">
+            <h1><a href="/blog/">Lab Notes</a></h2>
+            <h2>see what we're working on, and what we learned along the way</h3>
+          </div>
+          <div class="blog-cards-grid">
+          {{ for post of posts }}
+            {{ set author = post.authors?.[0] ? author_info?.[post.authors[0]] : null }}
+            <a href="{{ post.url }}" class="blog-card-landing">
+              {{ if post.image }}
+              <div class="blog-card-landing-image">
+                <img src="{{ post.image }}" alt="{{ post.title }}" loading="lazy">
+              </div>
+              {{ /if }}
+              <div class="blog-card-landing-body">
+                {{ if post.tags }}
+                <div class="blog-card-landing-tags">
+                  {{ for tag of post.tags }}
+                  <span class="tag-pill-sm">{{ tag }}</span>
+                  {{ /for }}
+                </div>
+                {{ /if }}
+                <h3>{{ post.title }}</h3>
+                {{ if post.excerpt }}
+                <p class="blog-card-landing-excerpt">{{ post.excerpt }}</p>
+                {{ /if }}
+                <div class="blog-card-landing-footer">
+                  {{ if author?.picture }}
+                  <img src="{{ author.picture }}" alt="{{ author.title || author.name }}">
+                  {{ /if }}
+                  <span>{{ author?.title || author?.name }}</span>
+                  {{ if post.date }}
+                  <span class="blog-card-landing-sep">&middot;</span>
+                  <time datetime="{{ post.date.toISOString().split('T')[0] }}">{{ post.date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) }}</time>
+                  {{ /if }}
+                </div>
+              </div>
+            </a>
+          {{ /for }}
+          </div>
+        </section>
 
       <!---------------------------------  TOOLS ---------------------------------->
 
@@ -413,39 +462,6 @@ body { font-family: "Inter", system-ui, sans-serif; color: var(--color-text); ba
         </div>
 
       </section>
-
-      <!----------------------------- LAB NOTES ----------------------------------->
-
-      {{ set posts = search.pages("type=blog", "date=desc", 3) }}
-        <section class="landing-section">
-          <div class="section-header">
-            <h1 id="lab-notes">Read</h1>
-            <h2>our notes on what we've build and discovered</h2>
-          </div>
-          <div class="lab-notes-header">
-            <h1><a href="/blog/">Lab Notes</a></h2>
-            <h2>see what we're working on, and what we learned along the way</h3>
-          </div>
-          <div class="blog-list">
-          {{ for post of posts }}
-            {{ set author = post.authors?.[0] ? author_info?.[post.authors[0]] : null }}
-            <a href="{{ post.url }}" class="blog-link">
-              {{ if author?.picture }}
-              <img class="blog-link-avatar" src="{{ author.picture }}" alt="{{ author.title || author.name }}">
-              {{ /if }}
-              <div class="blog-link-body">
-                <div class="blog-link-header">
-                  <span class="blog-link-title">{{ post.title }}</span>
-                  <time datetime="{{ post.date.toISOString().split('T')[0] }}">{{ post.date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) }}</time>
-                </div>
-                {{ if post.excerpt }}
-                <p class="blog-link-excerpt">{{ post.excerpt }}</p>
-                {{ /if }}
-              </div>
-            </a>
-          {{ /for }}
-          </div>
-        </section>
 
 
       <!----------------------------- VIDEOS ----------------------------------->

@@ -1,4 +1,4 @@
 {
   "type": "blog",
-  "parent": "Blog"
+  "layout": "layouts/blog.vto"
 }

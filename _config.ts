@@ -58,8 +58,31 @@ if (features.blog) {
   }));
 }
 
+// Compute reading time and resolve relative image paths
+site.preprocess([".md"], (pages) => {
+  for (const page of pages) {
+    // Resolve relative image paths to absolute so they work on index/landing pages
+    const img = page.data.image;
+    if (typeof img === "string" && img.startsWith("./")) {
+      const pageDir = (page.data.url as string).replace(/\/$/, "");
+      page.data.image = pageDir + "/" + img.slice(2);
+    }
+
+    try {
+      const srcPath = `./content${page.src.path}${page.src.ext}`;
+      const raw = Deno.readTextFileSync(srcPath);
+      // Strip frontmatter
+      const body = raw.replace(/^---[\s\S]*?---/, "").trim();
+      const words = body.split(/\s+/).length;
+      page.data.readingTime = Math.max(1, Math.round(words / 250));
+    } catch {
+      // skip if file can't be read
+    }
+  }
+});
+
 // Extract h2/h3 headings and inject TOC into rendered pages
-site.process([".md", ".njk"], (pages) => {
+site.process([".md", ".njk", ".vto"], (pages) => {
   for (const page of pages) {
     const content = page.content as string;
     if (!content || !content.includes("data-toc")) continue;
@@ -89,6 +112,17 @@ site.process([".md", ".njk"], (pages) => {
 // Copy static assets
 site.copy("assets");
 site.copy("favicon.svg");
+// Copy colocated blog post assets (images next to posts)
+import { walk } from "jsr:@std/fs/walk";
+for await (const entry of walk("./content/blog", {
+  exts: ["png", "jpg", "jpeg", "gif", "webp", "avif", "svg"],
+  includeDirs: false,
+})) {
+  // Get path relative to content/
+  const rel = entry.path.replace(/^\.\/content\//, "").replace(/^content\//, "");
+  const dir = rel.substring(0, rel.lastIndexOf("/"));
+  if (dir) site.copy(dir);
+}
 
 
 export default site;

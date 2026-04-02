@@ -1,0 +1,65 @@
+{{ set extra_css = ["/assets/css/blog.css"] }}
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  {{ include "partials/head.vto" }}
+</head>
+<body>
+
+{{ include "partials/header.vto" }}
+
+  <div class="blog-index-container">
+    <header class="blog-index-header">
+      <h1>Lab Notes</h1>
+      <p>{{ description }}</p>
+    </header>
+
+    <div class="blog-index-list">
+      {{ set posts = search.pages("type=blog", "date=desc") }}
+      {{ for post of posts }}
+      {{ if post.url != url }}
+        {{ set author = post.authors?.[0] ? author_info?.[post.authors[0]] : null }}
+        <article class="blog-card">
+          {{ if post.image }}
+          <div class="blog-card-image">
+            <img src="{{ post.image }}" alt="{{ post.title }}" loading="lazy">
+          </div>
+          {{ /if }}
+          <div class="blog-card-body">
+            {{ if post.tags }}
+            <div class="blog-card-tags">
+              {{ for tag of post.tags }}
+              <span class="tag-pill">{{ tag }}</span>
+              {{ /for }}
+            </div>
+            {{ /if }}
+            <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+            {{ if post.excerpt }}
+            <p class="blog-card-excerpt">{{ post.excerpt }}</p>
+            {{ /if }}
+            <div class="blog-card-footer">
+              {{ if author?.picture }}
+              <img class="blog-card-avatar" src="{{ author.picture }}" alt="{{ author.title || author.name }}">
+              {{ /if }}
+              <span>{{ author?.title || author?.name }}</span>
+              {{ if post.date }}
+                {{ set pd = (post.date instanceof Date) ? post.date : new Date(post.date) }}
+                <span class="blog-card-sep">&middot;</span>
+                <time datetime="{{ pd.toISOString().split('T')[0] }}">{{ pd.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) }}</time>
+              {{ /if }}
+              {{ if post.readingTime }}
+                <span class="blog-card-sep">&middot;</span>
+                <span>{{ post.readingTime }} min read</span>
+              {{ /if }}
+            </div>
+          </div>
+        </article>
+      {{ /if }}
+      {{ /for }}
+    </div>
+  </div>
+
+{{ include "partials/cookie-banner.vto" }}
+{{ include "partials/scripts.vto" }}
+</body>
+</html>

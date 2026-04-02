@@ -3,12 +3,15 @@ title: picjs—when Mermaid won't do what you want…
 date: 2026-03-31
 authors:
   - pragdave
+image: ./assets/braid.png
 excerpt: >
    picjs is a text-to-drawing tool that let's you control the layout,
    automate parts of the drawing, and even create simple animations. And it
    doesn't even need a browser to run...
-nav_order: 2
-parent: "Blog"
+tags:
+  - engineering
+  - tools
+  - picjs
 ---
 
 We generate a lot of diagrams at [Strike48 Labs](https://labs.strike48.com).
