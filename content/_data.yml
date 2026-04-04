@@ -1,5 +1,6 @@
 features:
-  blog: true
+  blog: false
+  videos: false
 
 site_title: Strike48 Labs
 site_description: Documentation for the Strike48 security platform
@@ -271,7 +272,7 @@ author_info:
   strike48:
     name: Strike48
     url: https://strike48.com
-    picture: /assets/img/strike48-logo-light.svg
+    picture: /assets/img/strike48-avatar.svg
     bio: "Building next-gen infrastructure tooling for security teams."
   pragdave:
     name: pragdave

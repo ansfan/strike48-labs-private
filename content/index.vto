@@ -92,6 +92,7 @@ body { font-family: "Inter", system-ui, sans-serif; color: var(--color-text); ba
 
       <!----------------------------- LAB NOTES ----------------------------------->
 
+      {{ if features.blog }}
       {{ set posts = search.pages("type=blog", "date=desc", 6) }}
         <section class="landing-section">
           <div class="section-header">
@@ -138,6 +139,7 @@ body { font-family: "Inter", system-ui, sans-serif; color: var(--color-text); ba
           {{ /for }}
           </div>
         </section>
+      {{ /if }}
 
       <!---------------------------------  TOOLS ---------------------------------->
 
@@ -211,6 +213,7 @@ body { font-family: "Inter", system-ui, sans-serif; color: var(--color-text); ba
 
       <!----------------------------- VIDEOS ----------------------------------->
 
+      {{ if features.video }}
       <section class="landing-section">
         <div class="section-header">
           <h1 id="videos">Watch</h1>
@@ -251,6 +254,8 @@ body { font-family: "Inter", system-ui, sans-serif; color: var(--color-text); ba
         </div>
       </div>
     </div>
+
+    {{ /if }}
 
     <!-- Features -->
     <section class="features-section">

@@ -43,3 +43,7 @@ Real-time updates are delivered via GraphQL subscriptions over WebSocket:
 - **Message streaming** — Token-by-token LLM responses
 - **Document processing** — Status updates as documents are indexed
 - **Workflow execution** — Task status changes during workflow runs
+
+## Explore
+
+A [GraphiQL](https://github.com/graphql/graphiql) interface is available at [https://pov.strike48.com/api/v1alpha/graphiql](https://pov.strike48.com/api/v1alpha/graphiql)
