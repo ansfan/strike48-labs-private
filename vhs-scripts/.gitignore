@@ -1,6 +1,0 @@
-# VHS creates working directories when executing commands
-# Only version control .tape scripts, not the generated artifacts
-my-connector/
-*/target/
-*/Cargo.lock
-**/target/

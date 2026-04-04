@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  {{ include "partials/head.vto" }}
+</head>
+<body>
+
+{{ include "partials/header.vto" }}
+{{ include "partials/breadcrumbs.vto" }}
+
+  <div class="docs-layout">
+    <nav class="sidebar">
+      <div id="pagefind-search"></div>
+      {{ include "partials/sidebar.vto" }}
+    </nav>
+
+    <main class="docs-content">
+      {{ if title }}<h1 class="page-title">{{ title }}</h1>{{ /if }}
+      <article>{{ content }}</article>
+    </main>
+
+    <aside class="toc">
+      <nav class="toc-nav" data-toc></nav>
+    </aside>
+  </div>
+
+{{ include "partials/cookie-banner.vto" }}
+{{ include "partials/scripts.vto" }}
+  <script src="/assets/js/sidebar-toggle.js"></script>
+  <script>new PagefindUI({element:"#pagefind-search",showSubResults:true,showImages:false});</script>
+  <script>
+    document.querySelectorAll(".sidebar a[aria-current='page']").forEach(function(a){
+      var d=a.closest("details");while(d){d.open=true;d=d.parentElement.closest("details")}
+    });
+  </script>
+</body>
+</html>

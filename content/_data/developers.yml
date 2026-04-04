@@ -1,0 +1,21 @@
+- name: Prospector Studio API
+  url: /developers/prospector-studio/graphql-api/
+  icon: >-
+    <path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"/><path d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/>
+  image:
+    src: /assets/img/prospector-studio-api/p-studio-api.png
+    alt: Graphql code
+  lead: "GraphQL API reference for integrators and connector developers."
+  description:
+    - "Use the API to integrate your tools with Prospector Studio, and let users automate them in their workflows."
+
+- name: SDK for Rust
+  url: /developers/sdk-rs/
+  icon: >-
+    <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+  image:
+    src: /assets/img/sdk-for-rust/grpc-if.png
+    alt: Code from the Rust interface
+  lead: "Build powerful, type-safe connectors with the Strike48 SDK."
+  description:
+    - "Wraps the API in a Rust-friendly way, with async support, ergonomic data structures, and built-in utilities for common connector tasks."

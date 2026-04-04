@@ -1,102 +1,183 @@
-# Strike48 Labs
+# Strike48 Labs Docs
 
-Documentation and content site for the Strike48 platform — **Prospector Studio**, **StrikeHub**, **KubeStudio**, **Pick**, and **StrikeKit**.
+Static documentation site built with [Lume](https://lume.land/) v3.2.2 (Deno).
 
-Built with [Astro](https://astro.build) + [Starlight](https://starlight.astro.build). Deployed on [Cloudflare Workers](https://developers.cloudflare.com/workers/).
+## Setup
 
-**Live site:** https://docs.strike48.com
-
-## Quick Start
-
-```bash
-npm install
-npm run dev
+```
+deno task serve    # dev server with hot reload
+deno task build    # build to _site/
 ```
 
-Open [http://localhost:4321](http://localhost:4321).
+## Writing Pages
 
-> Search requires a production build. Use `npm run build && npm run preview` to test it.
+Create a `.md` file anywhere. Add frontmatter:
 
-## Commands
+```yaml
+---
+title: Page Title
+description: Optional meta description
+---
+```
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start dev server |
-| `npm run build` | Build static site to `dist/` |
-| `npm run preview` | Preview production build locally |
-| `npm run deploy` | Build and deploy to Cloudflare Workers |
+The page URL mirrors the file path: `pick/guides/marketplace.md` → `/pick/guides/marketplace/`.
+
+Pages automatically get the docs layout (`_includes/layouts/docs.vto`), sidebar, TOC, and search indexing. Headings (h2/h3) with IDs populate the right-hand TOC automatically.
+
+To opt out of the docs layout (e.g. the landing page), set `layout: false` in frontmatter.
+
+## Writing Blog Posts
+
+Add a `.md` file to `blog/`. Naming convention: `YYYY-MM-DD_slug.md`.
+
+Required frontmatter:
+
+```yaml
+---
+title: Post Title
+date: 2026-03-19
+authors:
+  - pragdave
+excerpt: >
+  One-paragraph summary. Used in the blog index and RSS feed.
+nav_order: 3
+parent: "Blog"
+---
+```
+
+- `authors` — list of keys from `author_info` in `_data.yml`
+- `nav_order` — controls sort order on the blog index (lower = first)
+- The `blog/_data.json` sets `type: "blog"` for all posts in the directory
+
+The 3 most recent posts appear on the landing page under "Lab Notes".
+
+## Adding Authors
+
+Edit `_data.yml`, add to the `author_info` map:
+
+```yaml
+author_info:
+  your_id:
+    name: your_id
+    title: Display Name
+    url: https://example.com
+    picture: https://example.com/avatar.png
+```
+
+Then reference `your_id` in blog post `authors` arrays.
+
+## Updating the Sidebar
+
+Edit `_data.yml` under `sidebar`. Structure is nested groups → items → sub-items (up to 4 levels):
+
+```yaml
+sidebar:
+  - label: "Group Name"
+    collapsed: false          # open by default; omit or true to start collapsed
+    items:
+      - label: Page Name
+        url: /path/to/page/
+      - label: Section
+        collapsed: true
+        items:
+          - label: Sub Page
+            url: /section/sub-page/
+```
+
+Active page highlighting and auto-expanding parent sections happen automatically.
+
+## Landing Page Cards & Videos
+
+The landing page (`index.vto`) renders three sections from YAML data files in `_data/`:
+
+| Section | Data file | Template variable |
+|---------|-----------|-------------------|
+| Tools | `_data/tools.yml` | `tools` |
+| Developer frameworks | `_data/developers.yml` | `developers` |
+| Videos | `_data/videos.yml` | `videos` |
+
+To add or edit a card, update the corresponding YAML file. Each tool/developer entry has: `name`, `url`, `icon` (inner SVG elements), `image` (`src` + `alt`), optional `lead`, and `description` (list of paragraphs). Video entries have: `product`, `title`, `highlight`, `description`, and `youtube_id`. Thumbnails are fetched automatically from YouTube; clicking a card opens a modal player.
+
+## Diagrams
+
+### Mermaid
+
+Standard fenced code blocks. Rendered to SVG at build time with separate light/dark variants:
+
+````md
+```mermaid
+graph TD
+  A --> B --> C
+```
+````
+
+### picjs
+
+[picjs](https://github.com/nicholasgasior/picjs) diagrams, also rendered at build time. Colors auto-invert in dark mode via CSS filter.
+
+````md
+```picjs
+"Input"
+arrow
+box "Process" fill lightblue
+arrow
+"Output"
+```
+````
+
+Meta options on the code fence:
+
+- `example` — side-by-side source + diagram
+- `stacked` — source above diagram
+- `width=X` — container width
+- `svgwidth=X` — SVG wrapper width (centers diagram)
+
+````md
+```picjs example svgwidth="12rem"
+box "A"
+arrow
+box "B"
+```
+````
+
+## Code Highlighting
+
+Standard fenced code blocks with language tags. Powered by highlight.js via Lume's `code_highlight` plugin. Custom no-op languages registered: `mermaid`, `picjs`, `tape`, `mdx`, `csv`, `no-highlight`.
+
+## Search
+
+[Pagefind](https://pagefind.app/) indexes all pages at build time. Search box is in the sidebar.
+
+## Dark Mode
+
+Theme toggle in the header. Persists to `localStorage`. Flash-free: an inline `<script>` in `<head>` reads the preference before paint.
+
+## Publishing
+
+Deployed via Cloudflare Workers (see `wrangler.toml`). The worker serves static assets from `_site/`.
 
 ## Project Structure
 
 ```
-src/
-├── assets/              # Logos, images
-├── components/          # Astro components
-│   ├── Hero.astro       # Landing page hero
-│   ├── NeuralGraph.astro # Interactive neural graph background
-│   ├── CookieConsent.astro # Cookie consent banner + GA loader
-│   ├── PageFrame.astro  # Starlight page frame override
-│   ├── Head.astro       # Starlight head override
-│   ├── Header.astro     # Custom header with nav links
-│   ├── SiteTitle.astro  # App switcher dropdown
-│   ├── PageTitle.astro  # Doc page title with breadcrumbs
-│   ├── ProductCard.astro # Product showcase cards
-│   └── FeatureGrid.astro # Feature grid layout
-├── content/docs/        # MDX documentation pages
-│   ├── prospector-studio/ # Prospector Studio docs
-│   ├── strikehub/       # StrikeHub docs
-│   ├── kubestudio/      # KubeStudio docs
-│   ├── pick/            # Pick docs
-│   ├── developers/      # SDK, API, StrikeKit docs
-│   ├── legal/           # Terms, privacy, developer guidelines
-│   ├── contributing/    # Contribution guidelines
-│   ├── shared/          # FAQ, troubleshooting (draft)
-│   └── media/           # Demos & media (draft)
-├── pages/index.astro    # Landing page
-├── styles/
-│   ├── custom.css       # Starlight theme overrides
-│   └── landing.css      # Landing page styles
-└── utils/
-    └── rehype-mermaid.ts # Mermaid diagram plugin
+_config.ts                  # Lume config, plugins, TOC processor
+_data.yml                   # Sidebar nav, authors, social links, site metadata
+_data.json                  # Global page defaults (lang)
+_includes/
+  layouts/docs.vto          # Main layout template (Vento)
+  partials/sidebar.vto      # Sidebar nav (native <details>/<summary>)
+_plugins/
+  mermaid.ts                # Build-time mermaid → SVG (light + dark)
+  picjs.ts                  # Build-time picjs → SVG
+assets/
+  css/custom.css            # All styles (no framework dependency)
+  js/theme-switcher.js      # Dark/light toggle
+  js/sidebar-toggle.js      # Mobile sidebar drawer
+  js/cookie-consent.js      # Cookie banner logic
+blog/                       # Blog posts (type: blog set by _data.json)
+index.vto                   # Landing page (opts out of docs layout)
+serve.ts                    # Entry point (imports lume/cli.ts)
 ```
 
-## Environment Variables
+## RSS
 
-| Variable | Where | Description |
-|----------|-------|-------------|
-| `PUBLIC_GA_ID` | Cloudflare (Production) | Google Analytics measurement ID for production builds |
-| `PUBLIC_GA_PREVIEW_ID` | Cloudflare (Preview) | Optional GA ID for preview builds |
-
-GA is configured automatically using Cloudflare's `WORKERS_CI_BRANCH` build variable:
-
-- **Main branch** → uses `PUBLIC_GA_ID` (no tracking if unset)
-- **Preview branches** → uses `G-VEZGSQCDEP` (hardcoded)
-- **Local dev** → GA never loads
-
-GA only fires after the user accepts the cookie consent banner.
-
-### Setting up in Cloudflare
-
-1. **Workers & Pages** → select `strike48-labs` → **Settings** → **Variables and Secrets**
-2. Under **Production**, add `PUBLIC_GA_ID` with your production measurement ID
-3. Preview branches use `G-VEZGSQCDEP` by default — no config needed
-
-## Draft Pages
-
-Pages with `draft: true` in frontmatter are excluded from production builds but visible in dev. Currently drafted:
-
-- Resources (FAQ, Troubleshooting)
-- Demos & Media
-
-## Contributing
-
-1. Create a branch
-2. Edit or add `.mdx` files in `src/content/docs/`
-3. Run `npm run dev` to preview
-4. Open a PR
-
-Starlight docs: https://starlight.astro.build
-
-## License
-
-MPL-2.0
+Feeds at `/feed.xml` and `/feed.json`, generated by Lume's feed plugin from all `type=blog` pages.

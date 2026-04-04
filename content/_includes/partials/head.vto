@@ -1,0 +1,25 @@
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>{{ site_title }}{{ if title }} - {{ title }}{{ /if }}</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/vars.css">
+  <link rel="stylesheet" href="/assets/css/custom.css">
+  <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+  <script src="/pagefind/pagefind-ui.js"></script>
+  {{ if extra_css }}{{ for css of extra_css }}
+  <link rel="stylesheet" href="{{ css }}">
+  {{ /for }}{{ /if }}
+  <script>
+    (function(){var t=localStorage.getItem("theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t)})();
+  </script>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ site_title }}">
+  <meta property="og:title" content="{{ title }}">
+  {{ if description }}<meta property="og:description" content="{{ description }}">
+  <meta name="description" content="{{ description }}">{{ /if }}
+  {{ if image }}<meta property="og:image" content="{{ site_url }}{{ image }}">{{ /if }}
+  <meta property="og:url" content="{{ site_url }}{{ url }}">

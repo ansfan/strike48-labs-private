@@ -1,0 +1,24 @@
+{{ set segments = url.split("/").filter((s) => s) }}
+{{ if segments.length > 0 }}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    {{ set crumbs = [] }}
+    {{ set path = "" }}
+    {{ for segment of segments }}
+      {{ set path = path + "/" + segment }}
+      {{ set pg = search.page("url=" + path + "/") }}
+      {{ if pg }}
+        {{ set crumbs = crumbs.concat([{ url: pg.url, title: pg.title }]) }}
+      {{ /if }}
+    {{ /for }}
+    {{ for crumb of crumbs }}
+      {{ if crumb.url == url }}
+        <li aria-current="page">{{ crumb.title }}</li>
+      {{ else }}
+        <li><a href="{{ crumb.url }}">{{ crumb.title }}</a></li>
+      {{ /if }}
+    {{ /for }}
+  </ol>
+</nav>
+{{ /if }}
