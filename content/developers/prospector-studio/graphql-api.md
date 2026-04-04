@@ -46,5 +46,5 @@ Real-time updates are delivered via GraphQL subscriptions over WebSocket:
 
 ## Explore
 
-A [GraphiQL](https://github.com/graphql/graphiql) interface is available at [https://studio.strike48.com/api/v1alpha/graphiql](https://studio.strike48.com/api/v1alpha/graphiql].
+A [GraphiQL](https://github.com/graphql/graphiql) interface is available at [https://studio.strike48.com/api/v1alpha/graphiql](https://studio.strike48.com/api/v1alpha/graphiql).
 
