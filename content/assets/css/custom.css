@@ -310,6 +310,21 @@ img {
   border-inline-start: 3px solid transparent;
 }
 
+/* When a summary wraps an anchor, the anchor owns padding + active-page border —
+   otherwise we'd compound padding and the link would sit deeper than a leaf <a>. */
+.sidebar details > summary:has(> a) {
+  padding: 0;
+  border-inline-start: none;
+}
+
+.sidebar details > summary > a {
+  flex: 1;
+}
+
+.sidebar details > summary:has(> a) > .caret {
+  margin-right: 0.5rem;
+}
+
 .sidebar details > summary::-webkit-details-marker {
   display: none;
 }

@@ -50,6 +50,10 @@ sidebar:
                 url: /prospector-studio/guides/workflows/
               - label: MCP Servers
                 url: /prospector-studio/guides/mcp-servers/
+                collapsed: true
+                items:
+                  - label: Construct MCP Integrations
+                    url: /prospector-studio/guides/mcp-servers/construct/
               - label: Connectors
                 url: /prospector-studio/guides/connectors/
       - label: StrikeHub
@@ -218,6 +222,40 @@ sidebar:
         items:
           - label: GraphQL API
             url: /developers/prospector-studio/graphql-api/
+          - label: Construct MCP Catalog
+            url: /developers/prospector-studio/construct-catalog/
+            collapsed: true
+            items:
+              - label: Abnormal Security
+                url: /developers/prospector-studio/construct-catalog/abnormal-security/
+              - label: ARIN Whois
+                url: /developers/prospector-studio/construct-catalog/arin-whois/
+              - label: Cribl
+                url: /developers/prospector-studio/construct-catalog/cribl/
+              - label: CrowdStrike Falcon
+                url: /developers/prospector-studio/construct-catalog/crowdstrike-falcon/
+              - label: CVE Lookup
+                url: /developers/prospector-studio/construct-catalog/cve-lookup/
+              - label: Darktrace
+                url: /developers/prospector-studio/construct-catalog/darktrace/
+              - label: Devo Alerts
+                url: /developers/prospector-studio/construct-catalog/devo-alerts/
+              - label: DNS
+                url: /developers/prospector-studio/construct-catalog/dns/
+              - label: Joe Security Sandbox
+                url: /developers/prospector-studio/construct-catalog/joe-security-sandbox/
+              - label: Microsoft Graph
+                url: /developers/prospector-studio/construct-catalog/microsoft-graph/
+              - label: Orca Security
+                url: /developers/prospector-studio/construct-catalog/orca-security/
+              - label: Rapid7 InsightVM Cloud
+                url: /developers/prospector-studio/construct-catalog/rapid7-insightvm-cloud/
+              - label: Splunk
+                url: /developers/prospector-studio/construct-catalog/splunk/
+              - label: Splunk Enterprise Security
+                url: /developers/prospector-studio/construct-catalog/splunk-enterprise-security/
+              - label: VirusTotal
+                url: /developers/prospector-studio/construct-catalog/virustotal/
       - label: SDK for Rust
         collapsed: true
         items:
