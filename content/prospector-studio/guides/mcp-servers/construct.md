@@ -11,21 +11,20 @@ Prospector Studio agents reach external systems through MCP servers. Most of tho
 
 Construct is a Rust runtime host that exposes a standard MCP interface to Prospector Studio while running its tools as sandboxed plugins inside the host process. To Studio, Construct looks like any other MCP server registered via [`.mcp.json`](/prospector-studio/guides/mcp-servers/) or the GraphQL API: it speaks JSON-RPC over HTTP/SSE, lists tools, and answers `tools/call`. To operators, it is one binary to deploy, observe, and secure — instead of a fleet of one-off servers each with their own auth, transport, and update story.
 
-```
-Prospector Studio                       Construct Runtime
-┌─────────────────┐    MCP/JSON-RPC    ┌──────────────────────────┐
-│  Agent / Tool   │ ─────────────────▶ │  Transport + Auth + Obs  │
-│    Registry     │                    │            │             │
-└─────────────────┘                    │            ▼             │
-                                       │     Plugin Registry      │
-                                       │   ┌──────┬──────┬─────┐  │
-                                       │   │ WASM │ WASM │ ... │  │
-                                       │   └──────┴──────┴─────┘  │
-                                       │            │             │
-                                       │            ▼             │
-                                       │   Outbound HTTP / KV /   │
-                                       │   Filesystem (gated)     │
-                                       └──────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph Studio["Prospector Studio"]
+        A["Agent / Tool Registry"]
+    end
+    subgraph Construct["Construct Runtime"]
+        direction TB
+        B["Transport · Auth · Observability"]
+        C["Plugin Registry (WASM)<br/>Plugin A · Plugin B · …"]
+        E["Outbound HTTP · KV · Filesystem<br/>(gated)"]
+        B --> C
+        C --> E
+    end
+    A -- "MCP / JSON-RPC" --> B
 ```
 
 ## How Studio Uses It
